@@ -1,8 +1,8 @@
 sprite_change_offset("idle", 37, 79);
-sprite_change_offset("hurt", 0, 0);
+sprite_change_offset("hurt", 37, 79);
 sprite_change_offset("crouch", 0, 0);
-sprite_change_offset("walk", 0, 0);
-sprite_change_offset("walkturn", 0, 0);
+sprite_change_offset("walk", 40, 94);
+sprite_change_offset("walkturn", 40, 94);
 sprite_change_offset("dash", 37, 109);
 sprite_change_offset("dashstart", 37, 79);
 sprite_change_offset("dashstop", 37, 79);
