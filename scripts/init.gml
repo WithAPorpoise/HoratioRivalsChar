@@ -6,10 +6,12 @@ hitstun_hurtbox_spr = -1;
 bambood = false;
 ate_player_bamboo = false;
 
-ground = 0;
+combo_count = 0;
 has_ground = false;
 steelman = false;
 strawman = false;
+tip_dir = point_direction(0,0,0,0);
+tip_dist = point_distance(0,0,0,0);
 
 char_height = 52;
 idle_anim_speed = .1;
@@ -75,7 +77,7 @@ tech_active_frames = 3;
 tech_recovery_frames = 1;
 
 //tech roll animation frames
-techroll_startup_frames = 2
+techroll_startup_frames = 2;
 techroll_active_frames = 2;
 techroll_recovery_frames = 2;
 techroll_speed = 10;

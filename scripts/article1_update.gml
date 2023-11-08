@@ -70,11 +70,11 @@ if (state == 2){
 var break_time = 16;
 if (state == 3){
     if (state_timer == 1){
-        var bamboo = create_hitbox(AT_USPECIAL, 1, x, y-32);
-        bamboo.hsp = 0;
-        if (player_id.left_down) bamboo.hsp -= 3;
-        if (player_id.right_down) bamboo.hsp += 3;
-        bamboo.vsp = -10;
+        var tip = create_hitbox(AT_USPECIAL, 1, x, y-32);
+        tip.hsp = 0;
+        if (player_id.left_down) tip.hsp -= 3;
+        if (player_id.right_down) tip.hsp += 3;
+        tip.vsp = -10;
     }
     image_index = 9 + state_timer * 4 / break_time;
     if (state_timer == break_time){

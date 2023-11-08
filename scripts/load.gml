@@ -1,6 +1,6 @@
 //set_victory_theme(sound_get("victory_guadua"));
 
-sprite_change_offset("idle", 37, 79);
+sprite_change_offset("idle", 41, 100);
 sprite_change_offset("hurt", 37, 79);
 sprite_change_offset("crouch", 45, 94);
 sprite_change_offset("walk", 40, 94);

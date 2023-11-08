@@ -152,23 +152,23 @@ if (attack == AT_FSPECIAL || attack == AT_FSPECIAL_AIR){
 if (attack == AT_USPECIAL){
     if (window == 1){
         if (window_timer == 1){
-            bamboo = noone;
+            tip = noone;
             with (asset_get("pHitBox")){
                 if (player == other.player && select == other.select && attack == AT_USPECIAL
                 && ((point_distance(x,y,other.x,other.y-other.char_height*.5) < 450 && y < other.y+32)
                 || (x > view_get_xview() - 32 && x < view_get_xview() + view_get_wview() + 32 && y < view_get_yview() + view_get_hview()))){
-                    other.bamboo = id;
+                    other.tip = id;
                     break;
                 }
             }
-            if (bamboo != noone){
+            if (tip != noone){
                 window = 4;
                 window_timer = 0;
-                //freeze the bamboo stick in place
-                bamboo.hsp = 0;
-                bamboo.vsp = 0;
-                bamboo.grav = 0;
-                bamboo.hitbox_timer = 0; //reset the bamboo's lifespan
+                //freeze the laurel tip in place
+                tip.hsp = 0;
+                tip.vsp = 0;
+                tip.grav = 0;
+                tip.hitbox_timer = 0; //reset the tip's lifespan
             } else {
                 if (free && vsp > -10)
                     vsp = -10;
@@ -177,41 +177,41 @@ if (attack == AT_USPECIAL){
     }
     
     if (window == 4){
-        if (bamboo != noone){
-            spr_dir = sign(bamboo.x - x);
+        if (tip != noone){
+            spr_dir = sign(tip.x - x);
             if (spr_dir == 0) spr_dir = 1;
-            var bamboo_dir = point_direction(x,y-char_height*.5,bamboo.x,bamboo.y);
-            bamboo_dir = 270 - bamboo_dir;
-            if (bamboo_dir > 180) bamboo_dir -= 360;
-            if (bamboo_dir < -180) bamboo_dir += 360;
-            bamboo_dir = abs(bamboo_dir);
+            var tip_dir = point_direction(x,y-char_height*.5,tip.x,tip.y);
+            tip_dir = 270 - tip_dir;
+            if (tip_dir > 180) tip_dir -= 360;
+            if (tip_dir < -180) tip_dir += 360;
+            tip_dir = abs(tip_dir);
             var temp_img = 0;
-            if (bamboo_dir > 144) temp_img = 4;
-            else if (bamboo_dir > 108) temp_img = 3;
-            else if (bamboo_dir > 72) temp_img = 2;
-            else if (bamboo_dir > 36) temp_img = 1;
+            if (tip_dir > 144) temp_img = 4;
+            else if (tip_dir > 108) temp_img = 3;
+            else if (tip_dir > 72) temp_img = 2;
+            else if (tip_dir > 36) temp_img = 1;
             set_window_value(AT_USPECIAL, 5, AG_WINDOW_ANIM_FRAME_START, 11+temp_img);
             set_window_value(AT_USPECIAL, 6, AG_WINDOW_ANIM_FRAME_START, 16+temp_img);
         }
     }
     
-    //TETHERING TO THE BAMBOO
+    //TETHERING TO THE laurel tip
     if (window == 6 && !hitpause){
-        if (bamboo != noone && instance_exists(bamboo)){
-            //zoom toward the bamboo
-            var bamboo_dir = point_direction(x, y-char_height*.5, bamboo.x, bamboo.y);
+        if (tip != noone && instance_exists(tip)){
+            //zoom toward the tip
+            var tip_dir = point_direction(x, y-char_height*.5, tip.x, tip.y);
             var tether_speed = 32;
-            hsp = lengthdir_x(tether_speed, bamboo_dir);
-            vsp = lengthdir_y(tether_speed, bamboo_dir);
+            hsp = lengthdir_x(tether_speed, tip_dir);
+            vsp = lengthdir_y(tether_speed, tip_dir);
             
             //stop when close
-            if (point_distance(x, y-char_height*.5, bamboo.x, bamboo.y) < 32){
+            if (point_distance(x, y-char_height*.5, tip.x, tip.y) < 32){
                 set_state(PS_IDLE_AIR);
                 hsp = clamp(hsp, -6, 6);
                 vsp = clamp(vsp, -10, -4);
                 destroy_hitboxes();
-                bamboo.destroyed = 1;
-                //instance_destroy(bamboo);
+                tip.destroyed = 1;
+                //instance_destroy(tip);
             }
         } else {
             set_state(PS_IDLE_AIR);
@@ -245,7 +245,7 @@ if (attack == AT_USPECIAL){
             hsp = clamp(hsp, -6, 6);
             vsp = clamp(vsp, -10, -4);
             destroy_hitboxes();
-            bamboo.destroyed = 1;
+            tip.destroyed = 1;
             move_cooldown[attack] = 0;
         }
         if (window == 4 || window == 5){
