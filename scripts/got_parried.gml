@@ -1,5 +1,5 @@
 //got_parried - called when an opponent parries your attack
 
-if (hit_player_obj.bambood && hit_player_obj.bambood_id == id){
-    hit_player_obj.bambood = false;
-}
+timing = false;
+combo_count = 0;
+combo_timer = 0;

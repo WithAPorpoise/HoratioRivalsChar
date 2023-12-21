@@ -7,8 +7,8 @@ with (asset_get("obj_article1")){
     }
 }
 
-with (asset_get("oPlayer")){
-    if (bambood && bambood_id == other.id){
-        bambood = false;
-    }
-}
+
+timing = false;
+has_ground = false;
+combo_count = 0;
+combo_timer = 0;

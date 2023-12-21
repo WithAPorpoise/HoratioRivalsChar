@@ -3,7 +3,7 @@
 # the_option_name: your input
 
 
-aseprite_path: C:\Program Files\Tools\Aseprite\aseprite.exe # TO USE ASEPRITE, PUT YOUR PATH BEFORE THE "#" <-
+aseprite_path: C:\Program Files (x86)\Games\Steam\steamapps\common\Aseprite\Aseprite.exe # TO USE ASEPRITE, PUT YOUR PATH BEFORE THE "#" <-
     # ^ This should point to your Aseprite.exe absolute path, with no quotes, for example: 
     # aseprite_path: C:/Program Files/Aseprite/aseprite.exe
     # If correct, copying the path into your file explorer address bar will open aseprite.
@@ -55,5 +55,5 @@ warnings:
 - recursive_set_attack
     # Comment out any warnings you want to disable with `#`.
     # Learn more about warnings at https://rivalslib.com/assistant/warnings/
-is_ssl: false
+is_ssl: true
     # If the character is for SSL mode (doubles sprite size)

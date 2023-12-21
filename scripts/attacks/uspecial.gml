@@ -44,7 +44,7 @@ set_num_hitboxes(AT_USPECIAL, 3);
 
 set_hitbox_value(AT_USPECIAL, 1, HG_HITBOX_TYPE, 2);
 set_hitbox_value(AT_USPECIAL, 1, HG_WINDOW, 2);
-set_hitbox_value(AT_USPECIAL, 1, HG_LIFETIME, 90);
+set_hitbox_value(AT_USPECIAL, 1, HG_LIFETIME, 600);
 set_hitbox_value(AT_USPECIAL, 1, HG_HITBOX_X, 26);
 set_hitbox_value(AT_USPECIAL, 1, HG_HITBOX_Y, -53);
 set_hitbox_value(AT_USPECIAL, 1, HG_WIDTH, 50);
@@ -59,11 +59,16 @@ set_hitbox_value(AT_USPECIAL, 1, HG_HITPAUSE_SCALING, .45);
 set_hitbox_value(AT_USPECIAL, 1, HG_VISUAL_EFFECT, small_leaf_hfx);
 set_hitbox_value(AT_USPECIAL, 1, HG_HIT_SFX, asset_get("sfx_leafy_hit1"));
 set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_SPRITE, sprite_get("ground_proj"));
+set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_ANIM_SPEED, 0);
 set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_MASK, -1);
 set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_GRAVITY, .25);
 set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_WALL_BEHAVIOR, 2);
-set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_GROUND_BEHAVIOR, 0);
+set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_GROUND_BEHAVIOR, -1);
 set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_ENEMY_BEHAVIOR, 1);
+set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_DOES_NOT_REFLECT, 1);
+set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_IS_TRANSCENDENT, 1);
+set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_PLASMA_SAFE, 1);
+set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_DESTROY_EFFECT, ground_proj_fx);
 
 set_hitbox_value(AT_USPECIAL, 2, HG_HITBOX_TYPE, 1);
 set_hitbox_value(AT_USPECIAL, 2, HG_WINDOW, 6);
