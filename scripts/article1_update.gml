@@ -43,13 +43,13 @@ if (state == 1){
     image_index = 4+ (golden*12);
     
     with (asset_get("pHitBox")){
-        if (player_id == other.player_id && (attack == AT_FSPECIAL || attack == AT_FSPECIAL_AIR)
+        if (player_id == other.player_id && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR)
         && hbox_num == 2 && place_meeting(x,y,other.id)){
             other.state = 3;
-            if (attack == AT_FSPECIAL_AIR){
+            if (attack == AT_NSPECIAL_AIR){
                 other.state = 4;
                 with (player_id){
-                    set_window_value(AT_FSPECIAL_AIR, 6, AG_WINDOW_VSPEED, -18);
+                    set_window_value(AT_NSPECIAL_AIR, 6, AG_WINDOW_VSPEED, -18);
                 }
             }
             other.state_timer = 0;

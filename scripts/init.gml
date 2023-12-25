@@ -15,6 +15,7 @@ goal_obj = noone;
 lump_obj = noone;
 golden=true;
 max_whip_dist = 250;
+window_loops = 0;
 
 hurtbox_spr = sprite_get("horatio_hurtbox");
 crouchbox_spr = asset_get("ex_guy_crouch_box");

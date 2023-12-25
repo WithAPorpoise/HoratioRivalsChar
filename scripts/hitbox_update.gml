@@ -15,13 +15,14 @@ if (attack == AT_USPECIAL){
     
     if (hitbox_timer > 5){ //no hits right after it's created
         with (asset_get("pHitBox")){
-            if (select == player_id.select && (attack == AT_FSPECIAL || attack == AT_FSPECIAL_AIR)
+            if (select == player_id.select && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR)
             && hbox_num == 2 && place_meeting(x,y,other.id)){
                 other.hitbox_timer = 0;
                 other.hsp = 0;
+                other.image_index= (golden*3);
                 if (player_id.left_down) other.hsp -= 3;
                 if (player_id.right_down) other.hsp += 3;
-                if (attack == AT_FSPECIAL)
+                if (attack == AT_NSPECIAL)
                     other.vsp = -10;
                 else
                     other.vsp = 10;

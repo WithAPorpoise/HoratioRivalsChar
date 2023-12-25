@@ -1,4 +1,4 @@
-//article1_init
+//article2_init
 
 init = 0;
 sprite_index = sprite_get("ground_lump");

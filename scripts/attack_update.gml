@@ -1,11 +1,11 @@
 //B - Reversals
-if (attack == AT_NSPECIAL || attack == AT_FSPECIAL || attack == AT_FSPECIAL_AIR || attack == AT_DSPECIAL_AIR){ //no B-reversing Uspecial or Dspecial, since they require a quick backward input to aim
+if (attack == AT_FSPECIAL || attack == AT_USPECIAL_GROUND || attack == AT_USPECIAL || attack == AT_DSPECIAL_AIR){ //no B-reversing Uspecial or Dspecial, since they require a quick backward input to aim
     trigger_b_reverse();
 }
 
 if (attack == AT_DSTRONG){
     if (window == 3 && window_timer == 1 && !hitpause){
-        with (asset_get("obj_article1")){
+        with (asset_get("obj_article2")){
             if (player_id == other.id && state == 1){
                 state = 3;
                 state_timer = 0;
@@ -14,9 +14,53 @@ if (attack == AT_DSTRONG){
     }
 }
 
-if (attack == AT_NSPECIAL){
-    if (window == 2){
-        // this code moves the player toward the 2nd hitbox, guaranteeing that it hits
+//if (attack == AT_FSPECIAL && free){
+//    attack = AT_FSPECIAL_AIR;
+//}
+
+if (attack == AT_FSPECIAL){
+    if (window == 2 ){
+        if(special_down || window_loops <= 3){
+            if (free && window_loops<1){
+                vsp-=2;
+            }
+            if(abs(hsp) <=abs(1)){
+                window = 3;
+            }
+            if(joy_dir == -spr_dir){
+                spr_dr *= -1;
+            }
+            else{
+                if (window_timer ==6){
+                    window_loops+=1;
+                }
+                window_timer = window_timer %6;
+            
+            }
+        }
+        else {
+            window_loops = 0;
+            window_timer = 0;
+            window = 3;
+        }
+    }
+    if (window == 3 ){
+        if (sprite_index >= 10){
+            window = 4;
+            window_timer = 0;
+        }
+    }
+    if (window == 4){
+        if (sprite_index >= 12){
+            window_timer = 0;
+            window = 8;
+            attack_end() ;
+            
+        }
+    }
+                
+        
+        /* this code moves the player toward the 2nd hitbox, guaranteeing that it hits
         with (asset_get("oPlayer")) {
             if (hitpause && state_cat == SC_HITSTUN && hit_player_obj == other.id
             && last_attack == other.attack && state != PS_FROZEN){
@@ -59,23 +103,24 @@ if (attack == AT_NSPECIAL){
             init_shader();
         }
     }
+    */
 }
 /*
-if (attack == AT_FSPECIAL || attack == AT_FSPECIAL_AIR){
-    if (attack == AT_FSPECIAL_AIR && window < 3 && !free){
-        attack = AT_FSPECIAL;
+if (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR){
+    if (attack == AT_NSPECIAL_AIR && window < 3 && !free){
+        attack = AT_NSPECIAL;
         hurtboxID.sprite_index = get_attack_value(attack, AG_HURTBOX_SPRITE);
     }
-    if (attack == AT_FSPECIAL && window < 3 && free){
-        attack = AT_FSPECIAL_AIR;
+    if (attack == AT_NSPECIAL && window < 3 && free){
+        attack = AT_NSPECIAL_AIR;
         hurtboxID.sprite_index = get_attack_value(attack, AG_HURTBOX_SPRITE);
     }
 
     can_fast_fall = false;
     if (window == 1 && window_timer == 1){
         moved_up = false;
-        //reset the vspeed to the value in fspecial_air.gml
-        reset_window_value(AT_FSPECIAL_AIR, 6, AG_WINDOW_VSPEED);
+        //reset the vspeed to the value in NSPECIAL_air.gml
+        reset_window_value(AT_NSPECIAL_AIR, 6, AG_WINDOW_VSPEED);
     }
     if (window == 2){
         // MOVE UP AT LEDGE
@@ -148,13 +193,13 @@ if (attack == AT_FSPECIAL || attack == AT_FSPECIAL_AIR){
 }
 */
 
-if (attack == AT_FSPECIAL){
+if (attack == AT_NSPECIAL && attack != AT_NSPECIAL){
     with (asset_get("oPlayer")) self.golden = !self.golden;
     if (window == 1){
         if (window_timer == 1){
             tip = noone;
             with (asset_get("goal_obj")){
-                if (player == other.player && select == other.select && attack == AT_FSPECIAL
+                if (player == other.player && select == other.select && attack == AT_NSPECIAL
                 && ((point_distance(x,y,other.x,other.y-other.char_height*.5) < max_whip_dist)
                 || (x > view_get_xview() - 32 && x < view_get_xview() + view_get_wview() + 32 && y < view_get_yview() + view_get_hview()))){
                     other.tip = id;
@@ -190,8 +235,8 @@ if (attack == AT_FSPECIAL){
             else if (tip_dir > 108) temp_img = 3;
             else if (tip_dir > 72) temp_img = 2;
             else if (tip_dir > 36) temp_img = 1;
-            set_window_value(AT_FSPECIAL, 2, AG_WINDOW_ANIM_FRAME_START, 1);
-            set_window_value(AT_FSPECIAL, 3, AG_WINDOW_ANIM_FRAME_START, 1);
+            set_window_value(AT_NSPECIAL, 2, AG_WINDOW_ANIM_FRAME_START, 1);
+            set_window_value(AT_NSPECIAL, 3, AG_WINDOW_ANIM_FRAME_START, 1);
         }
     }
     
@@ -219,7 +264,7 @@ if (attack == AT_FSPECIAL){
             vsp = clamp(vsp, -10, -4);
             destroy_hitboxes();
         }
-        move_cooldown[AT_FSPECIAL] = 100;
+        move_cooldown[AT_NSPECIAL] = 100;
     }
     
     //END OF WINDOW CODE
