@@ -10,8 +10,9 @@ with (asset_get("obj_article1")){
 
 combo_count = 0;
 combo_timer = 0;
+golden = false;
 timing = false;
-has_ground = false;
+has_ground = true;
 steelman = false;
 strawman = false;
 golden = false;

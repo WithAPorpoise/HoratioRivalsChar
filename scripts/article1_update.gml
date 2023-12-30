@@ -13,9 +13,9 @@ if (init == 0){
     }
 }
 
-golden = myplayer.golden;
-current_score = myplayer.current_score;
-max_score = myplayer.max_score;
+golden = player_id.golden;
+//current_score = player_id.current_score;
+//max_score = player_id.max_score;
 state_timer++;
 
 var grow_time = 16;
@@ -46,41 +46,29 @@ if (abs(hsp)>0) {
     
     
     if((state_timer % 4 )==0){
-        create_hitbox(AT_DSPECIAL, 1, x-(20*spr_dir), y-20);
+        create_hitbox(AT_DSPECIAL, 1, x-(20*player_id.spr_dir), y-20);
         spawn_hit_fx(x,y-20, player_id.small_wood_hfx);
     }
     
 }
 //Remove the whip tip by forcing it to time out after hittting the goalpost
 with (asset_get("pHitBox")){
-    if(player_id.tip!=noone && place_meeting(x,y,player_id.goal_obj)) {
+    if(player_id == other.player_id && player_id.tip!=noone && place_meeting(x,y,player_id.goal_obj)) {
         hitbox_timer=length;
     }
 }
 if (state == 1){
     image_index = 4+ (golden*12);
-    /*
-    with (asset_get("pHitBox")){
-        if (player_id == other.player_id && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR)
-        && hbox_num == 2 && place_meeting(x,y,other.id)){
-            other.state = 3;
-            if (attack == AT_NSPECIAL_AIR){
-                other.state = 4;
-                with (player_id){
-                    set_window_value(AT_NSPECIAL_AIR, 6, AG_WINDOW_VSPEED, -18);
-                }
+    with(asset_get("pHitBox")){
+        if(other.player_id == player_id && attack == AT_USPECIAL && hbox_num == 1 && place_meeting(x,y,player_id.goal_obj)){
+            if(player_id.current_score < player_id.max_score){
+                player_id.current_score++;
             }
-            other.state_timer = 0;
-        } else if (player_id == other.player_id
-        && attack == AT_NSPECIAL && place_meeting(x,y,other.id)){
-            other.state = 4;
-            other.state_timer = 0;
-            player_id.window = 4;
-            player_id.window_timer = 0;
+            spawn_hit_fx(x, y, player_id.small_leaf_hfx);
+            sound_play(asset_get("sfx_leafy_hit1"));
+            hitbox_timer = length;
         }
     }
-    */
-    
     with (asset_get("plasma_field_obj")){
         with (other.id){
             if (get_player_team(get_instance_player(other)) != get_player_team(player)){

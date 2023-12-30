@@ -3,7 +3,7 @@ if (attack == AT_FSPECIAL || attack == AT_USPECIAL_GROUND || attack == AT_USPECI
     trigger_b_reverse();
 }
 
-
+//Swap to golden fstrongs when golden achieved
 if(attack == AT_FSTRONG||attack == AT_USTRONG || attack == AT_DSTRONG){
     if !golden {
         if window == 4{
@@ -79,7 +79,6 @@ if (attack != AT_NSPECIAL && attack!=AT_NSPECIAL_AIR){
     }
 }*/
 if (attack == AT_NSPECIAL || attack==AT_NSPECIAL_AIR){
-    if (goal_obj == noone) goal_obj= asset_get("obj_article1");
     //if (!golden) {golden = !golden;}
     if (window == 1){
         if (window_timer == get_window_value(AT_NSPECIAL, window, AG_WINDOW_LENGTH)){
@@ -87,24 +86,28 @@ if (attack == AT_NSPECIAL || attack==AT_NSPECIAL_AIR){
             set_hitbox_value(AT_NSPECIAL, 1, HG_PROJECTILE_VSPEED, -3);
             create_hitbox(AT_NSPECIAL,1,x+(20*spr_dir),y-30);
             tip = asset_get("pHitBox");
-            }
+                }
+        with(asset_get("obj_article1")){
+            if (player_id == other && player_id.goal_obj != noone) 
+                player_id.goal_obj=id;
+        }
     }
     
-    if (tip!= noone){
+    if (instance_exists(tip)){
                 
                 var tip_dir = point_direction(x, y-char_height*.5, tip.x, tip.y);
                 var tether_speed = 32;
     }
     
     if (window == 2){
-        if(tip!=noone){
+        if(instance_exists(tip)){
             if(tip != goal_obj){
                 if(special_down && point_distance(x, y, tip.x, y) <max_whip_dist){
                      window_timer = 0;
                      //if(tip.hitbox_timer == (tip.length-5)){
                        //     tip.length+=5;
                         //}
-                        tip.hitbox_timer=0;
+                    tip.hitbox_timer=0;
                 }
                 else {
                     //tip.length *= 2;
@@ -113,7 +116,8 @@ if (attack == AT_NSPECIAL || attack==AT_NSPECIAL_AIR){
             }
             else {
                 tip.hsp = -10*spr_dir;
-                window = 6;
+                if(free) window = 3;
+                else window = 6;
             }
         }
         else window = 6;
@@ -127,30 +131,32 @@ if (attack == AT_NSPECIAL || attack==AT_NSPECIAL_AIR){
             if (tip == goal_obj){
                 if(!tethered)tethered=true;
                 
-                if(free&&tethered){
+                if(free||tethered){
                     //zoom toward the tip
                     hsp = lengthdir_x(tether_speed, tip_dir);
                     vsp = lengthdir_y(tether_speed, tip_dir);
                     
                     //stop when close
                     if (point_distance(x, y, tip.x, y) < 32){
-                        //set_state(PS_IDLE_AIR);
+                        set_state(PS_IDLE_AIR);
                         hsp = clamp(hsp, -6, 6);
                         vsp = clamp(vsp, -10, -4);
+                        tethered = false;
+                        window = 6
                     }
                 }
                 else{
                     window = 4;
                 }
-            } 
+            }
             else {
-                //set_state(PS_IDLE_AIR);
+                set_state(PS_IDLE_AIR);
             }
         }
     }
     
     if (window == 4){
-        if (tip != noone){
+        if (instance_exists(tip)){
             spr_dir = sign(tip.x - x);
             if (spr_dir == 0) spr_dir = 1;
             var tip_dir = point_direction(x,y-char_height*.5,tip.x,tip.y);
@@ -166,32 +172,39 @@ if (attack == AT_NSPECIAL || attack==AT_NSPECIAL_AIR){
             set_window_value(AT_NSPECIAL, 2, AG_WINDOW_ANIM_FRAME_START, 1);
             set_window_value(AT_NSPECIAL, 3, AG_WINDOW_ANIM_FRAME_START, 1);
         }
+        window = 3;
     }
     
     if window == 5{
-        if(tip != goal_obj)
-            if window_timer==1{
-                tip.hsp = -lengthdir_x(tether_speed, tip_dir);
-                tip.vsp = -lengthdir_y(tether_speed, tip_dir);
-                tip.grav = 0;
+        if(instance_exists(tip)){
+            if(tip != goal_obj){
+                if window_timer==1{
+                    tip.hsp = -lengthdir_x(tether_speed, tip_dir);
+                    tip.vsp = -lengthdir_y(tether_speed, tip_dir);
+                    tip.grav = 0;
+                }
+                else{
+                    tip.hsp -= 2*spr_dir;
+                    
+                }
+                window_timer=0;
+                if (place_meeting(x,y,tip)|| (goal_obj != noone && goal_obj.hsp==0)){
+                    window=6;
+                }
             }
-            else{
-                tip.hsp -= 2*spr_dir;
-                
-            }
-            window_timer=0;
-            if (place_meeting(x,y,tip)||goal_obj.hsp==0){
-                window=6;
-            }
-        
+        }
     }
     
     if (window == 6 ){
         move_cooldown[AT_NSPECIAL] = 20;
         tethered = false;
-        tip.hitbox_timer = tip.length;
-        tip=noone;
-        //destroy_hitboxes();
+        if(instance_exists(tip)){
+            if(tip != goal_obj){
+                tip.hitbox_timer = tip.length;
+            }
+            tip.destroyed=1;
+            tip=noone;
+        }
     }
     
     //END OF WINDOW CODE

@@ -20,3 +20,10 @@ with(asset_get("obj_article2")){
     draw_debug_text(x-10,y+10,string(player));
     draw_debug_text(x,y+10,string(myplayer));
 }
+with(asset_get("pHitBox")){
+    
+    var hitbox_info = "hbox: " +string(attack)+", "+ string(hbox_num);
+    draw_debug_text(x,y,hitbox_info);
+    // draw_debug_text(x-10,y+10,string(player));
+    // draw_debug_text(x,y+10,string(myplayer));
+}

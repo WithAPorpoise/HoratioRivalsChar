@@ -11,6 +11,7 @@ tethered = false;
 tip = noone;
 tip_dir = point_direction(0,0,0,0);
 tip_dist = point_distance(0,0,0,0);
+tip_height=0;
 ground_proj_fx = hit_fx_create( sprite_get("ground_proj"), 12);
 gold_proj_fx = hit_fx_create( sprite_get("gold_proj"), 12);
 ground_lump_fx = hit_fx_create( sprite_get("ground_lump"), 12);

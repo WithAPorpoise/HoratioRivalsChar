@@ -15,20 +15,26 @@ if (init == 0){
     state = 1;
 }
 
-golden = player_id.golden;
+//golden = player_id.golden;
 state_timer++;
 
 if (state == 1){
-    image_index = (golden*3);
+    image_index = (player_id.golden*3);
     
     with (asset_get("pHitBox")){
-        if(self.id != player_id.tip){
+        if(player_id == other.player_id && self.id != player_id.tip){
             if (player_id == other.player_id && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR )&& place_meeting(x,y,other.id)){
-                other.state = 3;
+                other.state = 2;
                 other.state_timer = 0;
+                /*var ball = create_hitbox(AT_USPECIAL, 1, x, y-32);
+                ball.image_index = (player_id.golden*3);
+                ball.hsp = 0;
+                ball.vsp = -5;*/
+                player_id.has_ground = true;
+                player_id.window = 5;
             }
             else if (player_id == other.player_id && attack == AT_FSPECIAL && place_meeting(x,y,other.id)){
-                other.state = 2;
+                other.state = 3;
                 other.state_timer = 0;
             }
         }
@@ -53,7 +59,7 @@ if (state == 1){
 
 var die_time = 6;
 if (state == 2){
-    image_index = (1 + (golden*3)) + state_timer * 2 / die_time;
+    image_index = (1 + (player_id.golden*3)) + state_timer * 2 / die_time;
     if (state_timer >= die_time){
         instance_destroy();
         exit;
@@ -64,11 +70,11 @@ var launch_time = 6;
 if (state == 3){
     if (state_timer == 1){
         var ball = create_hitbox(AT_USPECIAL, 1, x, y-32);
-        ball.image_index = (golden*3);
+        ball.image_index = (player_id.golden*3);
         ball.hsp = 4*(player_id.spr_dir);
         ball.vsp = -9;
     }
-    image_index = (golden*3) + state_timer * 2 / launch_time;
+    image_index = (player_id.golden*3) + state_timer * 2 / launch_time;
     if (state_timer == launch_time){
         instance_destroy();
         exit;

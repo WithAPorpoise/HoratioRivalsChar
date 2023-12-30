@@ -31,24 +31,15 @@ if (attack == AT_USPECIAL){
                 other.image_index= (golden*3);
                 if (player_id.left_down) {other.hsp -= 3;}
                 if (player_id.right_down) {other.hsp += 3;}
-                if (attack == AT_NSPECIAL){
+                if (player.attack == AT_NSPECIAL){
                     other.vsp = -10;}
                 else{
                     other.vsp = 10;}
             }
             
         }
-        with asset_get("obj_article1"){
-            if(other.player_id == player_id && other.attack == AT_USPECIAL && other.hbox_num == 2 && place_meeting(x,y,other.id)){
-                spawn_hit_fx(other.x, other.y, asset_get("hfx_leaf_small"));
-                if(current_score < max_score)current_score++;{
-                destroy_hitboxes();
-                    
-                }
-                
-            }
-        }
     }
+    
     
     
     if (!free){
@@ -57,7 +48,7 @@ if (attack == AT_USPECIAL){
         destroyed = true;
     }
 }
-
+        
 if (attack == AT_DSPECIAL_AIR){
     if (!free){
         if(!freemd) {
