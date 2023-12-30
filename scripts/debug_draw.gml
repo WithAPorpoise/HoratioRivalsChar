@@ -4,7 +4,8 @@
 //draw_debug_text(x,y,"window: " + string(window));
 
 var golden_state = "Golden: " + string(golden);
-    draw_debug_text(x-10,y+10,string(player));
+var player_info = string(player);
+draw_debug_text(x-8,y+10,player_info);
 draw_debug_text(x,y,golden_state);
 
 with(asset_get("obj_article1")){

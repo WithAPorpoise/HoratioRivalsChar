@@ -3,9 +3,9 @@
 if(myplayer == noone) myplayer = asset_get("oPlayer");
 if (init == 0){
     init = 1;
-    golden = myplayer.golden;
-    myplayer.lump_obj = id;
+    player_id.lump_obj = id;
     
+    //Removing the previous ground lump when a new one spawns
      with (asset_get("obj_article2")){
         if (id != other.id && player_id == other.player_id && state < 2){
             state = 2;
@@ -15,30 +15,26 @@ if (init == 0){
     state = 1;
 }
 
+golden = player_id.golden;
 state_timer++;
 
 if (state == 1){
     image_index = (golden*3);
     
     with (asset_get("pHitBox")){
-        if (player_id == other.player_id && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR)
-        && hbox_num == 2 && place_meeting(x,y,other.id)){
-            other.state = 3;
-            if (attack == AT_FSPECIAL_AIR){
-                other.state = 4;
-                with (player_id){
-                    set_window_value(AT_FSPECIAL_AIR, 6, AG_WINDOW_VSPEED, -18);
-                }
+        if(self.id != player_id.tip){
+            if (player_id == other.player_id && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR )&& place_meeting(x,y,other.id)){
+                other.state = 3;
+                other.state_timer = 0;
             }
-            other.state_timer = 0;
-        } else if (player_id == other.player_id
-        && attack == AT_NSPECIAL && place_meeting(x,y,other.id)){
-            other.state = 2;
-            other.state_timer = 0;
-            player_id.window = 4;
-            player_id.window_timer = 0;
+            else if (player_id == other.player_id && attack == AT_FSPECIAL && place_meeting(x,y,other.id)){
+                other.state = 2;
+                other.state_timer = 0;
+            }
         }
-    }
+    } 
+        
+    
     
     with (asset_get("plasma_field_obj")){
         with (other.id){
@@ -64,17 +60,16 @@ if (state == 2){
     }
 }
 
-var break_time = 16;
+var launch_time = 6;
 if (state == 3){
     if (state_timer == 1){
-        var ball = create_hitbox(AT_USPECIAL, 1, x, y);
+        var ball = create_hitbox(AT_USPECIAL, 1, x, y-32);
         ball.image_index = (golden*3);
-        if (player_id.left_down) ball.hsp -= 3;
-        if (player_id.right_down) ball.hsp += 3;
+        ball.hsp = 4*(player_id.spr_dir);
         ball.vsp = -9;
     }
-    image_index = (golden*3) + state_timer * 2 / break_time;
-    if (state_timer == break_time){
+    image_index = (golden*3) + state_timer * 2 / launch_time;
+    if (state_timer == launch_time){
         instance_destroy();
         exit;
     }

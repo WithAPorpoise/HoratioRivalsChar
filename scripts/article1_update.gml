@@ -3,7 +3,6 @@
 if(myplayer == noone) myplayer = asset_get("oPlayer");
 if (init == 0){
     init = 1;
-    golden = myplayer.golden;
     myplayer.goal_obj = id;
     
     with (asset_get("obj_article1")){
@@ -14,6 +13,9 @@ if (init == 0){
     }
 }
 
+golden = myplayer.golden;
+current_score = myplayer.current_score;
+max_score = myplayer.max_score;
 state_timer++;
 
 var grow_time = 16;
@@ -38,10 +40,26 @@ if (state == 24){ //IDLE
     }
 }
 */
-
+if (free) state = 4;
+if (abs(hsp)>0) {
+    hsp -= .25*(hsp/abs(hsp));
+    
+    
+    if((state_timer % 4 )==0){
+        create_hitbox(AT_DSPECIAL, 1, x-(20*spr_dir), y-20);
+        spawn_hit_fx(x,y-20, player_id.small_wood_hfx);
+    }
+    
+}
+//Remove the whip tip by forcing it to time out after hittting the goalpost
+with (asset_get("pHitBox")){
+    if(player_id.tip!=noone && place_meeting(x,y,player_id.goal_obj)) {
+        hitbox_timer=length;
+    }
+}
 if (state == 1){
     image_index = 4+ (golden*12);
-    
+    /*
     with (asset_get("pHitBox")){
         if (player_id == other.player_id && (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR)
         && hbox_num == 2 && place_meeting(x,y,other.id)){
@@ -61,6 +79,7 @@ if (state == 1){
             player_id.window_timer = 0;
         }
     }
+    */
     
     with (asset_get("plasma_field_obj")){
         with (other.id){
@@ -96,11 +115,11 @@ if (state == 2){
 var break_time = 16;
 if (state == 3){
     if (state_timer == 1){
-        var tip = create_hitbox(AT_USPECIAL, 1, x, y-32);
-        tip.hsp = 0;
-        if (player_id.left_down) tip.hsp -= 3;
-        if (player_id.right_down) tip.hsp += 3;
-        tip.vsp = -10;
+        var ball = create_hitbox(AT_USPECIAL, 1, x, y-32);
+        ball.hsp = 0;
+        if (player_id.left_down) ball.hsp -= 3;
+        if (player_id.right_down) ball.hsp += 3;
+        ball.vsp = -10;
     }
     image_index = (golden*12)+ 9 + state_timer * 4 / break_time;
     if (state_timer == break_time){

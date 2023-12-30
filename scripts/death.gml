@@ -8,7 +8,11 @@ with (asset_get("obj_article1")){
 }
 
 
-timing = false;
-has_ground = false;
 combo_count = 0;
 combo_timer = 0;
+timing = false;
+has_ground = false;
+steelman = false;
+strawman = false;
+golden = false;
+loops = 0;

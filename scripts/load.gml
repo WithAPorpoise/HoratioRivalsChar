@@ -68,17 +68,16 @@ sprite_change_offset("taunt", 54, 94);
 sprite_change_offset("plat", 92, 16);
 
 sprite_change_offset("ground_proj", 32, 32);
+sprite_change_offset("ground_lump", 32, 32);
+sprite_change_offset("gold_proj", 32, 32);
 sprite_change_offset("goal_post", 30, 179);
 sprite_change_offset("uspecial_arm", 6, 28);
 sprite_change_offset("uspecial_rope", 0, 8);
 sprite_change_offset("dspecial_proj", 32, 16);
-sprite_change_offset("mark_front", 96, 96);
-sprite_change_offset("mark_back", 96, 96);
-sprite_change_offset("mark_small_front", 96, 96);
-sprite_change_offset("mark_small_back", 96, 96);
 
 sprite_change_offset("hfx_wood_small", 80, 80);
 sprite_change_offset("hfx_wood_large", 128, 128);
 sprite_change_offset("hfx_wood_xlarge", 256, 256);
 sprite_change_offset("hfx_leaf_small", 72, 72);
-sprite_change_offset("hfx_leaf_xlarge", 256, 256);
+sprite_change_offset("hfx_leaf_medium", 128, 128);
+sprite_change_offset("hfx_leaf_xlarge", 128, 128);

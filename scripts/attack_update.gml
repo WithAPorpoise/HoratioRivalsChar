@@ -3,13 +3,18 @@ if (attack == AT_FSPECIAL || attack == AT_USPECIAL_GROUND || attack == AT_USPECI
     trigger_b_reverse();
 }
 
-if (attack == AT_DSTRONG){
-    if (window == 3 && window_timer == 1 && !hitpause){
-        with (asset_get("obj_article2")){
-            if (player_id == other.id && state == 1){
-                state = 3;
-                state_timer = 0;
-            }
+
+if(attack == AT_FSTRONG||attack == AT_USTRONG || attack == AT_DSTRONG){
+    if !golden {
+        if window == 4{
+            window=10;
+            window_timer=0;
+        }
+    }
+    if golden{
+        if window ==1{ 
+            window = 6;
+            window_timer=0;
         }
     }
 }
@@ -19,10 +24,16 @@ if (attack == AT_DSTRONG){
 //}
 
 if (attack == AT_FSPECIAL){
+    if (golden) golden = !golden;
     if (window == 2 ){
-        if(special_down || window_loops <= 3){
-            if (free && window_loops<1){
-                vsp-=2;
+        if(special_down || loops <= 3){
+            if (free && loops<2){
+                set_attack_value(AT_FSPECIAL,AG_USES_CUSTOM_GRAVITY,1);
+                set_window_value(AT_FSPECIAL,1,AG_WINDOW_CUSTOM_GRAVITY,0);
+                set_window_value(AT_FSPECIAL,2,AG_WINDOW_CUSTOM_GRAVITY,0);
+            }
+            else{
+                set_attack_value(AT_FSPECIAL,AG_USES_CUSTOM_GRAVITY,0);
             }
             if(abs(hsp) <=abs(1)){
                 window = 3;
@@ -32,14 +43,14 @@ if (attack == AT_FSPECIAL){
             }
             else{
                 if (window_timer ==6){
-                    window_loops+=1;
+                    loops+=1;
                 }
                 window_timer = window_timer %6;
             
             }
         }
         else {
-            window_loops = 0;
+            loops = 0;
             window_timer = 0;
             window = 3;
         }
@@ -59,169 +70,86 @@ if (attack == AT_FSPECIAL){
         }
     }
                 
-        
-        /* this code moves the player toward the 2nd hitbox, guaranteeing that it hits
-        with (asset_get("oPlayer")) {
-            if (hitpause && state_cat == SC_HITSTUN && hit_player_obj == other.id
-            && last_attack == other.attack && state != PS_FROZEN){
-                x += (other.x+40*other.spr_dir - x)/5;
-                if (free){
-                    y += (other.y - y) / 5;
-                }
-            }
-        }
-        if (!hitpause){
-            window = 5;
-            window_timer = 0;
-        }
-    }
-    if (window == 4){
-        if (window_timer == 31 || window_timer == 35 || window_timer == 39){
-            //HEAL 3 DAMAGE
-            take_damage(player, -1, -1);
-            outline_color = [ 0, 127, 0 ];
-            init_shader();
-            outline_color = [ 0, 0, 0 ]; //change outline color back to black in case the move gets interrupted
-        }
-        if (window_timer == 41){
-            init_shader();
-        }
-    }
-    if (window == 5 && window_timer == get_window_value(attack, 5, AG_WINDOW_LENGTH)){
-        window = 6;
-        window_timer = 0;
-    }
-    if (window == 6){
-        if (window_timer > 7 && window_timer < 13 && window_timer % 2 == 0){
-            //HEAL 3 DAMAGE
-            take_damage(player, -1, -1);
-            outline_color = [ 0, 127, 0 ];
-            init_shader();
-            outline_color = [ 0, 0, 0 ]; //change outline color back to black in case the move gets interrupted
-        }
-        if (window_timer == 13){
-            init_shader();
-        }
-    }
-    */
 }
 /*
-if (attack == AT_NSPECIAL || attack == AT_NSPECIAL_AIR){
-    if (attack == AT_NSPECIAL_AIR && window < 3 && !free){
-        attack = AT_NSPECIAL;
-        hurtboxID.sprite_index = get_attack_value(attack, AG_HURTBOX_SPRITE);
+if (attack != AT_NSPECIAL && attack!=AT_NSPECIAL_AIR){
+    if (tip!=noone){
+        tip.destroyed = 1;
+        destroy_hitboxes();
     }
-    if (attack == AT_NSPECIAL && window < 3 && free){
-        attack = AT_NSPECIAL_AIR;
-        hurtboxID.sprite_index = get_attack_value(attack, AG_HURTBOX_SPRITE);
-    }
-
-    can_fast_fall = false;
-    if (window == 1 && window_timer == 1){
-        moved_up = false;
-        //reset the vspeed to the value in NSPECIAL_air.gml
-        reset_window_value(AT_NSPECIAL_AIR, 6, AG_WINDOW_VSPEED);
-    }
-    if (window == 2){
-        // MOVE UP AT LEDGE
-        if (!moved_up){
-            if (free && place_meeting(x+hsp,y,asset_get("par_block"))){
-                for (var i = 0; i < 20; i++){
-                    if (!place_meeting(x+hsp,y-(i+1),asset_get("par_block"))){
-                        y -= i;
-                        moved_up = true;
-                        break;
-                    }
-                }
-            }
-        }
-        //TRANSITION INTO WINDOW 4 ON HIT
-        var should_swing = has_hit;
-        with (asset_get("obj_article1")){
-            if (player_id == other.id && state == 1){
-                with (asset_get("pHitBox")){
-                    if (player == other.player && attack == other.player_id.attack && hbox_num == 1
-                    && instance_position(x, y, other.id)){
-                        should_swing = true;
-                        break;
-                    }
-                }
-            }
-        }
-        with (asset_get("pHitBox")){
-            if (type == 2 && player_id == other.id && attack == AT_USPECIAL){
-                with (asset_get("pHitBox")){
-                    if (player == other.player && attack == other.player_id.attack && hbox_num == 1
-                    && instance_position(x, y, other.id)){
-                        should_swing = true;
-                        other.hitstop = 4;
-                        other.in_hitpause = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (should_swing){
-            window = 4;
-            window_timer = 0;
-            destroy_hitboxes();
-            has_hit = false;
-            has_hit_player = false;
-        }
-    }
-    
-    if (window < 3 || (window == 3 && !free) || window == 5){
-        can_move = false;
-    }
-    
-    can_wall_jump = false;
-    if (window == 2 || window == 3 || window == 6)
-        can_wall_jump = true;
-    
-    //END OF WINDOW CODE
-    if (window_timer == get_window_value(attack, window, AG_WINDOW_LENGTH)){
-        if (window == 4 || window == 5){
-            window++;
-            window_timer = 0;
-            if (window == 6){
-                //since the window is changed manually, the speed boost is not automatically applied
-                hsp = get_window_value(attack, window, AG_WINDOW_HSPEED)*spr_dir;
-                vsp = get_window_value(attack, window, AG_WINDOW_VSPEED);
-            }
-        }
-    }
-}
-*/
-
-if (attack == AT_NSPECIAL && attack != AT_NSPECIAL){
-    with (asset_get("oPlayer")) self.golden = !self.golden;
+}*/
+if (attack == AT_NSPECIAL || attack==AT_NSPECIAL_AIR){
+    if (goal_obj == noone) goal_obj= asset_get("obj_article1");
+    //if (!golden) {golden = !golden;}
     if (window == 1){
-        if (window_timer == 1){
-            tip = noone;
-            with (asset_get("goal_obj")){
-                if (player == other.player && select == other.select && attack == AT_NSPECIAL
-                && ((point_distance(x,y,other.x,other.y-other.char_height*.5) < max_whip_dist)
-                || (x > view_get_xview() - 32 && x < view_get_xview() + view_get_wview() + 32 && y < view_get_yview() + view_get_hview()))){
-                    other.tip = id;
-                    break;
+        if (window_timer == get_window_value(AT_NSPECIAL, window, AG_WINDOW_LENGTH)){
+            set_hitbox_value(AT_NSPECIAL, 1, HG_PROJECTILE_HSPEED, 20);
+            set_hitbox_value(AT_NSPECIAL, 1, HG_PROJECTILE_VSPEED, -3);
+            create_hitbox(AT_NSPECIAL,1,x+(20*spr_dir),y-30);
+            tip = asset_get("pHitBox");
+            }
+    }
+    
+    if (tip!= noone){
+                
+                var tip_dir = point_direction(x, y-char_height*.5, tip.x, tip.y);
+                var tether_speed = 32;
+    }
+    
+    if (window == 2){
+        if(tip!=noone){
+            if(tip != goal_obj){
+                if(special_down && point_distance(x, y, tip.x, y) <max_whip_dist){
+                     window_timer = 0;
+                     //if(tip.hitbox_timer == (tip.length-5)){
+                       //     tip.length+=5;
+                        //}
+                        tip.hitbox_timer=0;
+                }
+                else {
+                    //tip.length *= 2;
+                    window = 5;
                 }
             }
-            if (tip != noone){
-                window = 2;
-                window_timer = 0;
-                //freeze the laurel tip in place
-                tip.hsp = 0;
-                tip.vsp = 0;
-                tip.grav = 0;
-                tip.hitbox_timer = 0; //reset the tip's lifespan
-            } else {
-                if (free && vsp > -10)
-                    vsp = -10;
+            else {
+                tip.hsp = -10*spr_dir;
+                window = 6;
+            }
+        }
+        else window = 6;
+    }
+    
+    //freeze the laurel tip in place
+    if(window = 3){
+        
+    // MovingTO THE laurel tip
+        if (!hitpause){
+            if (tip == goal_obj){
+                if(!tethered)tethered=true;
+                
+                if(free&&tethered){
+                    //zoom toward the tip
+                    hsp = lengthdir_x(tether_speed, tip_dir);
+                    vsp = lengthdir_y(tether_speed, tip_dir);
+                    
+                    //stop when close
+                    if (point_distance(x, y, tip.x, y) < 32){
+                        //set_state(PS_IDLE_AIR);
+                        hsp = clamp(hsp, -6, 6);
+                        vsp = clamp(vsp, -10, -4);
+                    }
+                }
+                else{
+                    window = 4;
+                }
+            } 
+            else {
+                //set_state(PS_IDLE_AIR);
             }
         }
     }
     
-    if (window == 2){
+    if (window == 4){
         if (tip != noone){
             spr_dir = sign(tip.x - x);
             if (spr_dir == 0) spr_dir = 1;
@@ -240,38 +168,60 @@ if (attack == AT_NSPECIAL && attack != AT_NSPECIAL){
         }
     }
     
-    //TETHERING TO THE laurel tip
-    if (window == 3 && !hitpause){
-        if (tip != noone && instance_exists(tip)){
-            //zoom toward the tip
-            var tip_dir = point_direction(x, y-char_height*.5, tip.x, tip.y);
-            var tether_speed = 32;
-            hsp = lengthdir_x(tether_speed, tip_dir);
-            vsp = lengthdir_y(tether_speed, tip_dir);
-            
-            //stop when close
-            if (point_distance(x, y-char_height*.5, tip.x, tip.y) < 32){
-                set_state(PS_IDLE_AIR);
-                hsp = clamp(hsp, -6, 6);
-                vsp = clamp(vsp, -10, -4);
-                destroy_hitboxes();
-                tip.destroyed = 1;
-                //instance_destroy(tip);
+    if window == 5{
+        if(tip != goal_obj)
+            if window_timer==1{
+                tip.hsp = -lengthdir_x(tether_speed, tip_dir);
+                tip.vsp = -lengthdir_y(tether_speed, tip_dir);
+                tip.grav = 0;
             }
-        } else {
-            set_state(PS_IDLE_AIR);
-            hsp = clamp(hsp, -6, 6);
-            vsp = clamp(vsp, -10, -4);
-            destroy_hitboxes();
-        }
-        move_cooldown[AT_NSPECIAL] = 100;
+            else{
+                tip.hsp -= 2*spr_dir;
+                
+            }
+            window_timer=0;
+            if (place_meeting(x,y,tip)||goal_obj.hsp==0){
+                window=6;
+            }
+        
+    }
+    
+    if (window == 6 ){
+        move_cooldown[AT_NSPECIAL] = 20;
+        tethered = false;
+        tip.hitbox_timer = tip.length;
+        tip=noone;
+        //destroy_hitboxes();
     }
     
     //END OF WINDOW CODE
+
 }
 if (attack == AT_USPECIAL){
-    if (window_timer == get_window_value(attack, window, AG_WINDOW_LENGTH)){
-        if (window == 1){
+    if (!golden) {
+        set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_SPRITE, sprite_get("ground_proj"));
+        //set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_DESTROY_EFFECT, ground_proj_fx);
+        
+    }
+    else {
+        set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_SPRITE, sprite_get("gold_proj"));
+        //set_hitbox_value(AT_USPECIAL, 1, HG_PROJECTILE_DESTROY_EFFECT, gold_proj_fx);
+        
+    }
+    if(free){
+        set_window_value(AT_USPECIAL,1,AG_WINDOW_LENGTH, 2);
+        set_window_value(AT_USPECIAL,2,AG_WINDOW_LENGTH, 6);
+        if (window == 2){
+            vsp = -8;
+            if(window_timer == get_window_value(attack, window, AG_WINDOW_LENGTH))recoveries++;
+        }
+    }
+    else{
+        set_window_value(AT_USPECIAL,1,AG_WINDOW_LENGTH, 10);
+        set_window_value(AT_USPECIAL,2,AG_WINDOW_LENGTH, 12);
+    }
+    if (has_ground){
+        if (window == 2 && window_timer == get_window_value(attack, window, AG_WINDOW_LENGTH)){
             var throw_speed = 7;
             if (special_down){
                 throw_speed = 11;
@@ -286,20 +236,22 @@ if (attack == AT_USPECIAL){
             }
             set_hitbox_value(attack, 1, HG_PROJECTILE_HSPEED, throw_speed*dcos(throw_angle));
             set_hitbox_value(attack, 1, HG_PROJECTILE_VSPEED, throw_speed*-dsin(throw_angle));
+            
+            create_hitbox(AT_USPECIAL, 1, x+30, y-53);
+            
+            has_ground=false;
         }
-        if (window == 6){
-            set_state(PS_IDLE_AIR);
-            hsp = clamp(hsp, -6, 6);
-            vsp = clamp(vsp, -10, -4);
-            destroy_hitboxes();
-            tip.destroyed = 1;
-            move_cooldown[attack] = 0;
-        }
-        if (window == 4 || window == 5){
-            window++;
-            window_timer = 0;
+        
+    }
+     else if(window==3){
+        create_hitbox(AT_USPECIAL, 2, x, y);
+    }   
+    if (window == /*get_attack_value(attack,AG_NUM_WINDOWS)*/3){
+        if(recoveries >=2){
+            set_state(PS_PRATFALL);
         }
     }
+    
 }
 
 if (attack == AT_DSPECIAL){
@@ -322,6 +274,7 @@ if (attack == AT_DSPECIAL){
         move_cooldown[AT_DSPECIAL] = 60;
         move_cooldown[AT_DSPECIAL_AIR] = 60;
     }
+    //if !has_ground has_ground = !has_ground;
 }
 
 if (attack == AT_DSPECIAL_AIR){
