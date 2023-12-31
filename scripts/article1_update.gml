@@ -41,7 +41,7 @@ if (state == 24){ //IDLE
 }
 */
 if (free) state = 4;
-if (abs(hsp)>0) {
+else if (abs(hsp)>0) {
     hsp -= .25*(hsp/abs(hsp));
     
     
@@ -100,7 +100,6 @@ if (state == 2){
     }
 }
 
-var break_time = 16;
 if (state == 3){
     if (state_timer == 1){
         var ball = create_hitbox(AT_USPECIAL, 1, x, y-32);
@@ -115,9 +114,10 @@ if (state == 3){
         exit;
     }
 }
+var break_time = 16;
 if (state == 4){
     image_index = (golden*12)+ 9 + state_timer * 4 / break_time;
-    if (state_timer == break_time){
+    if (state_timer > break_time*4){
         instance_destroy();
         exit;
     }
